@@ -1,10 +1,9 @@
-using System;
-
 namespace Bank;
 
 public class BankAccount
 {
     private static int _accountNumberSeed = 123456789;
+    private readonly decimal _minimumBalance;
     public string Number { get; }
     public string Owner { get; set; }
     public decimal Balance
@@ -21,12 +20,21 @@ public class BankAccount
     }
 
 
-    public BankAccount(string name, decimal initialBalance)
+    public BankAccount(string name, decimal initialBalance) : this(name, initialBalance, 0) { }
+
+
+    public BankAccount(string name, decimal initialBalance, decimal minimumBalance)
     {
         Number = _accountNumberSeed.ToString();
         _accountNumberSeed++;
         Owner = name;
-        this.MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
+        _minimumBalance = minimumBalance;
+
+        if (initialBalance > 0)
+        {
+            MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
+        }
+
     }
 
     private List<Transaction> allTransactions = new List<Transaction>();
@@ -47,9 +55,14 @@ public class BankAccount
         {
             throw new ArgumentOutOfRangeException("Amount of withdraw must be positive");
         }
-        if (Balance - amount < 0)
+        if (Balance - amount < _minimumBalance && _minimumBalance == 0)
         {
             throw new InvalidOperationException("Not sufficient funds for this withdrawal");
+        }
+        if (Balance - amount < _minimumBalance && _minimumBalance != 0)
+        {
+            var fee = new Transaction(-20, date, "Overdraft fee");
+            allTransactions.Add(fee);
         }
         var withdraw = new Transaction(-amount, date, note);
         allTransactions.Add(withdraw);
@@ -70,4 +83,6 @@ public class BankAccount
 
         return history.ToString();
     }
+
+    public virtual void PerformMonthEndTransactions() { }
 }
