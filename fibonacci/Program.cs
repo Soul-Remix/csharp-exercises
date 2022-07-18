@@ -1,7 +1,18 @@
 ﻿using System.Diagnostics;
+using Utility;
+
+Console.WriteLine("1. iterator");
+Console.WriteLine("2. Recursive");
+Console.Write("Choose recursive or iterator function: ");
+string? type = Console.ReadLine();
+
+if (type != "1" && type != "2")
+{
+    Console.WriteLine("You should only choose from (1 or 2)");
+    return;
+}
 
 int number;
-
 do
 {
     Console.Write("Enter an integer number to calculate fibonacci: ");
@@ -20,25 +31,21 @@ do
 
 Stopwatch stopWatch = new Stopwatch();
 stopWatch.Start();
-ulong num = fib(number);
+
+ulong fibNum;
+switch (type)
+{
+    case "1":
+        fibNum = Fibonacci.FibIter(number);
+        Console.WriteLine($"Fibonacci number: {fibNum}");
+        break;
+    case "2":
+        fibNum = Fibonacci.FibRec(number);
+        Console.WriteLine($"Fibonacci number: {fibNum}");
+        break;
+}
+
 stopWatch.Stop();
-Console.WriteLine($"Fibonacci number: {num}");
 Console.WriteLine($"Time taken to calculate: {stopWatch.Elapsed}");
 Console.WriteLine("Press any key to exit");
 Console.ReadKey();
-
-static ulong fib(int n)
-{
-    ulong n1 = 0;
-    ulong n2 = 1;
-    ulong sum;
-
-    for (int i = 2; i <= n; i++)
-    {
-        sum = n1 + n2;
-        n1 = n2;
-        n2 = sum;
-    }
-
-    return n == 0 ? n1 : n2;
-}
