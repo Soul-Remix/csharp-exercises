@@ -10,7 +10,7 @@ class Program
         Console.WriteLine("Choose conversion type: (1 or 2)");
         Console.WriteLine("1. Celsius to Fahrenheit");
         Console.WriteLine("2. Fahrenheit to Celsius");
-        string type = Console.ReadLine();
+        string? type = Console.ReadLine();
 
         switch (type)
         {
