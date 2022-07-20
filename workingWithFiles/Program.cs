@@ -13,7 +13,7 @@ class MyProgram
 
         var files = GetFiles(storesPath);
 
-        var salesTotal = ClaculateSalesTotal(files);
+        var salesTotal = CalculateSalesTotal(files);
 
         if (!Directory.Exists(salesTotalPath))
         {
@@ -39,7 +39,7 @@ class MyProgram
         return files;
     }
 
-    public static decimal ClaculateSalesTotal(IEnumerable<string> files)
+    public static decimal CalculateSalesTotal(IEnumerable<string> files)
     {
         decimal salesTotal = 0;
 
