@@ -1,7 +1,7 @@
 namespace MvcMovie.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-class MovieGenreViewModel
+public class MovieGenreViewModel
 {
 
     public List<Movie>? Movies { get; set; }
